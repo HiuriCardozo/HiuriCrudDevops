@@ -35,6 +35,7 @@ app.put("/alunos/:id", async (req, res) => {
         req.body,
         { new: true }
     );
+
     res.json(aluno);
 });
 
@@ -43,6 +44,10 @@ app.delete("/alunos/:id", async (req, res) => {
     res.json({ mensagem: "Aluno removido" });
 });
 
-app.listen(3000, () => {
-    console.log("Servidor rodando em http://localhost:3000");
-});
+module.exports = app;
+
+if (require.main === module) {
+    app.listen(3000, () => {
+        console.log("Servidor rodando em http://localhost:3000");
+    });
+}
