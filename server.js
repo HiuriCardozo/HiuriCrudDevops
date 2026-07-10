@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -9,9 +11,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-mongoose.connect("mongodb://127.0.0.1:27017/faculdadeDB")
-.then(() => console.log("MongoDB conectado!"))
-.catch(err => console.log(err));
+// MOSTRA A URI LIDA DO .env (para teste)
+console.log(process.env.MONGO_URI);
+
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("MongoDB conectado!"))
+    .catch(err => console.log(err));
 
 const Aluno = mongoose.model("Aluno", {
     nome: String,
@@ -47,7 +52,9 @@ app.delete("/alunos/:id", async (req, res) => {
 module.exports = app;
 
 if (require.main === module) {
-    app.listen(3000, () => {
-        console.log("Servidor rodando em http://localhost:3000");
+    const PORT = process.env.PORT || 3000;
+
+    app.listen(PORT, () => {
+        console.log(`Servidor rodando na porta ${PORT}`);
     });
 }
